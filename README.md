@@ -1,4 +1,4 @@
-# vue-element-user-list
+# vue-element-user-dashboard
 
 ## Project setup
 ```
