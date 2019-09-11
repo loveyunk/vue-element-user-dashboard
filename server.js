@@ -18,5 +18,5 @@ router.render = (req, res) => {
 }
 
 server.listen(3000, () => {
-  console.log('JSON Server is running')
+  console.log('JSON Server is running on port 3000!')
 })

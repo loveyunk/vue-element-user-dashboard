@@ -10,6 +10,12 @@ npm install
 
 Start server
 
-``` bash
+```bash
 npm run serve
+```
+
+develop
+
+```bash
+npm run start
 ```
