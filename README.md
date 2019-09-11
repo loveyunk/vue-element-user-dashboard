@@ -1,29 +1,15 @@
 # vue-element-user-dashboard
 
-## Project setup
-```
+## Getting Started
+
+Install dependencies.
+
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+Start server
+
+``` bash
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
