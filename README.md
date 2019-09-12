@@ -11,7 +11,7 @@ npm install
 Start server
 
 ```bash
-npm run serve
+node server.js
 ```
 
 develop

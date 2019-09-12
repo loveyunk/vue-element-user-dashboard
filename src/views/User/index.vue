@@ -1,6 +1,11 @@
 <template>
   <div class="user-container">
-    <user-filter @on-add="handleAdd"></user-filter>
+    <user-filter
+      class="user-filter"
+      :filter="$route.query"
+      :on-filter-change="onFilterChange"
+      @on-add="handleAdd"
+    ></user-filter>
     <user-list
       :data-source="list"
       :pagination="pagination"
@@ -69,13 +74,20 @@ export default {
       this.pagination.pageSize = Number(payload.pageSize) || 10
       this.loading = false
     },
-    handleRefresh (newQuery = { page: this.pagination.currentPage }) {
-      const { query } = this.$route
-      if (Number(newQuery.page) === Number(query.page)) {
-        this.queryUserList(query)
-      } else {
-        this.$router.push({ name: 'user', query: { ...query, ...newQuery } })
-      }
+    handleRefresh (newQuery) {
+      const query = { ...this.$route.query, ...newQuery }
+      this.$router.push(
+        {
+          name: 'user',
+          query
+        },
+        undefined,
+        err => {
+          if (err.name === 'NavigationDuplicated') {
+            this.queryUserList(query)
+          }
+        }
+      )
     },
     async handleDelteItem (id) {
       this.loading = true
@@ -93,7 +105,6 @@ export default {
       this.modalVisible = true
     },
     handleCurrentChange (page) {
-      this.pagination.currentPage = page
       this.handleRefresh({
         page
       })
@@ -111,6 +122,9 @@ export default {
       }
       this.modalVisible = false
       this.handleRefresh()
+    },
+    onFilterChange (fields) {
+      this.handleRefresh({ ...fields })
     }
   }
 }
@@ -122,5 +136,8 @@ export default {
   margin: 50px auto;
   padding: 30px;
   background: #fff;
+  .user-filter {
+    margin-bottom: 20px;
+  }
 }
 </style>
