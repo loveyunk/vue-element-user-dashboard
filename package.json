@@ -13,6 +13,7 @@
     "core-js": "^2.6.5",
     "element-ui": "^2.11.1",
     "json-server": "^0.15.0",
+    "omit-empty": "^1.0.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"
   },

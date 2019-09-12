@@ -11,6 +11,7 @@
       :pagination="pagination"
       :loading="loading"
       @on-current-change="handleCurrentChange"
+      @on-size-change="handleSizeChange"
       @on-delete-item="handleDelteItem"
       @on-edit-item="handleEditItem"
     ></user-list>
@@ -33,6 +34,7 @@ import {
   createUser,
   updateUser
 } from '@/services/user'
+import omitEmpty from 'omit-empty'
 
 export default {
   name: 'User',
@@ -67,11 +69,12 @@ export default {
   methods: {
     async queryUserList (payload) {
       this.loading = true
-      const res = await queryUserList(payload)
+      const params = omitEmpty(payload)
+      const res = await queryUserList(params)
       this.list = res.data
       this.pagination.total = res.total
-      this.pagination.currentPage = Number(payload.page) || 1
       this.pagination.pageSize = Number(payload.pageSize) || 10
+      this.pagination.currentPage = Number(payload.page) || 1
       this.loading = false
     },
     handleRefresh (newQuery) {
@@ -107,6 +110,11 @@ export default {
     handleCurrentChange (page) {
       this.handleRefresh({
         page
+      })
+    },
+    handleSizeChange (pageSize) {
+      this.handleRefresh({
+        pageSize
       })
     },
     handleAdd () {

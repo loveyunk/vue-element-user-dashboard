@@ -66,9 +66,11 @@
     <div class="pagination-wrapper">
       <el-pagination
         v-bind="pagination"
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next, jumper"
         background
         @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :page-sizes="[10, 20, 30, 40]"
       ></el-pagination>
     </div>
   </div>
@@ -110,6 +112,9 @@ export default {
     },
     handleCurrentChange (page) {
       this.$emit('on-current-change', page)
+    },
+    handleSizeChange (pageSize) {
+      this.$emit('on-size-change', pageSize)
     }
   }
 }

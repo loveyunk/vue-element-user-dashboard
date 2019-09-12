@@ -1,9 +1,14 @@
 import request from '@/utils/request'
 
-export const queryUserList = ({ page = 1, pageSize = 10 }) => {
+export const queryUserList = ({ page = 1, pageSize = 10, ...rest } = {}) => {
   return request({
     method: 'get',
-    url: '/users?_limit=' + pageSize + '&_page=' + page
+    url: `/users`,
+    params: {
+      _limit: pageSize,
+      _page: page,
+      ...rest
+    }
   })
 }
 
