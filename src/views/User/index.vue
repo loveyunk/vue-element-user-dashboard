@@ -124,9 +124,10 @@ export default {
     },
     async handleOk (data, type) {
       if (type === 'create') {
-        await createUser(data)
+        const id = Math.floor(Math.random() * 10000000)
+        await createUser({ id, ...data })
       } else {
-        await updateUser(data.id, data)
+        await updateUser(data.id, { ...data })
       }
       this.modalVisible = false
       this.handleRefresh()
@@ -141,7 +142,7 @@ export default {
 <style lang="scss" scoped>
 .user-container {
   width: 80%;
-  margin: 50px auto;
+  margin: 20px auto 50px;
   padding: 30px;
   background: #fff;
   .user-filter {

@@ -65,6 +65,7 @@
     </el-table>
     <div class="pagination-wrapper">
       <el-pagination
+        v-if="dataSource.length"
         v-bind="pagination"
         layout="total, sizes, prev, pager, next, jumper"
         background

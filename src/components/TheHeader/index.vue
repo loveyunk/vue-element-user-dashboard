@@ -1,0 +1,30 @@
+<template>
+  <div class="base-header">
+    <el-menu
+      :default-active="activeIndex"
+      mode="horizontal"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+      router
+    >
+      <el-menu-item index="/home">主页</el-menu-item>
+      <el-menu-item index="/user">用户中心</el-menu-item>
+    </el-menu>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'TheHeader',
+  data () {
+    return {
+      activeIndex: '1'
+    }
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+
+</style>
