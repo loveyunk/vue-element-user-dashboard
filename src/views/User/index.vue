@@ -129,7 +129,8 @@ export default {
     async handleOk (data, type) {
       if (type === 'create') {
         const id = Math.floor(Math.random() * 10000000)
-        await createUser({ id, ...data })
+        const createTime = Date.now()
+        await createUser({ id, createTime, ...data })
       } else {
         await updateUser(data.id, { ...data })
       }

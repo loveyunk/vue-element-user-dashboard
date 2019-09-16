@@ -72,6 +72,14 @@ export default {
         callback()
       }
     }
+    const validateEmail = (rule, value, callback) => {
+      const regexp = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if (!regexp.test(value)) {
+        callback(new Error('输入的电子邮件无效!'))
+      } else {
+        callback()
+      }
+    }
     return {
       rules: {
         name: [{ required: true, trigger: 'blur' }],
@@ -82,7 +90,10 @@ export default {
           { required: true, trigger: 'blur' },
           { validator: validatePhone, trigger: 'blur' }
         ],
-        email: [{ required: true, trigger: 'blur' }]
+        email: [
+          { required: true, trigger: 'blur' },
+          { validator: validateEmail, trigger: 'blur' }
+        ]
         // address: [{ required: true, trigger: 'blur' }]
       }
     }

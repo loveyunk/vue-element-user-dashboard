@@ -1,6 +1,6 @@
 <template>
   <div class="filter-container">
-    <el-row>
+    <el-row type="flex" justify="space-between">
       <el-col :span="6">
         <el-input
           v-model="name"
@@ -9,7 +9,7 @@
           suffix-icon="el-icon-search"
         ></el-input>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="17">
         <el-row type="flex" justify="space-between">
           <div>
             <el-button type="primary" @click="handleSubmit">搜索</el-button>
