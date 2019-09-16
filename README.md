@@ -17,5 +17,5 @@ node server.js
 develop
 
 ```bash
-npm run start
+npm run serve
 ```
