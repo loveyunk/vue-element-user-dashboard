@@ -10,6 +10,7 @@
     >
       <el-menu-item index="/home">主页</el-menu-item>
       <el-menu-item index="/user">用户中心</el-menu-item>
+      <el-menu-item index="/404">404</el-menu-item>
     </el-menu>
   </div>
 </template>

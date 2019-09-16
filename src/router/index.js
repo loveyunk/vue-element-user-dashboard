@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import User from '@/views/User'
 import Home from '@/views/Home'
+import NotFound from '@/views/NotFound'
 import DefaultLayout from '@/layouts/DefaultLayout'
 
 Vue.use(Router)
@@ -18,7 +19,7 @@ export default new Router({
         {
           path: 'home',
           component: Home,
-          name: 'Home'
+          name: 'home'
         }
       ]
     },
@@ -29,9 +30,20 @@ export default new Router({
         {
           path: '/',
           component: User,
-          name: 'User'
+          name: 'user'
         }
       ]
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: NotFound
+    },
+    {
+      path: '*',
+      redirect: {
+        name: '404'
+      }
     }
   ]
 })

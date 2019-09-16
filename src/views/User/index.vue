@@ -1,30 +1,33 @@
 <template>
-  <div class="user-container">
-    <user-filter
-      class="user-filter"
-      :filter="$route.query"
-      :on-filter-change="onFilterChange"
-      @on-add="handleAdd"
-    ></user-filter>
-    <user-list
-      :data-source="list"
-      :pagination="pagination"
-      :loading="loading"
-      @on-current-change="handleCurrentChange"
-      @on-size-change="handleSizeChange"
-      @on-delete-item="handleDelteItem"
-      @on-edit-item="handleEditItem"
-    ></user-list>
-    <user-modal
-      :type="modalType"
-      :visible.sync="modalVisible"
-      :item="currentItem"
-      @on-ok="handleOk"
-    ></user-modal>
-  </div>
+  <body-color color="#eff1f4">
+    <div class="user-container">
+      <user-filter
+        class="user-filter"
+        :filter="$route.query"
+        :on-filter-change="onFilterChange"
+        @on-add="handleAdd"
+      ></user-filter>
+      <user-list
+        :data-source="list"
+        :pagination="pagination"
+        :loading="loading"
+        @on-current-change="handleCurrentChange"
+        @on-size-change="handleSizeChange"
+        @on-delete-item="handleDelteItem"
+        @on-edit-item="handleEditItem"
+      ></user-list>
+      <user-modal
+        :type="modalType"
+        :visible.sync="modalVisible"
+        :item="currentItem"
+        @on-ok="handleOk"
+      ></user-modal>
+    </div>
+  </body-color>
 </template>
 
 <script>
+import BodyColor from '@/components/BodyColor'
 import UserList from './components/List'
 import UserModal from './components/Modal'
 import UserFilter from './components/Filter'
@@ -39,6 +42,7 @@ import omitEmpty from 'omit-empty'
 export default {
   name: 'User',
   components: {
+    BodyColor,
     UserList,
     UserModal,
     UserFilter
