@@ -4,15 +4,12 @@
       <user-filter
         class="user-filter"
         :filter="$route.query"
-        :on-filter-change="onFilterChange"
+        :on-filter-change="handleFilterChange"
         @on-add="handleAdd"
       ></user-filter>
       <user-list
         :data-source="list"
-        :pagination="pagination"
         :loading="loading"
-        @on-current-change="handleCurrentChange"
-        @on-size-change="handleSizeChange"
         @on-delete-item="handleDelteItem"
         @on-edit-item="handleEditItem"
       ></user-list>
@@ -22,6 +19,17 @@
         :item="currentItem"
         @on-ok="handleOk"
       ></user-modal>
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-if="list.length"
+          v-bind="pagination"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          @current-change="handleCurrentPageChange"
+          @size-change="handlePageSizeChange"
+          :page-sizes="[10, 20, 30, 40]"
+        ></el-pagination>
+      </div>
     </div>
   </body-color>
 </template>
@@ -63,69 +71,78 @@ export default {
   },
   watch: {
     $route: {
-      handler (to, from) {
-        const query = to.query
-        this.queryUserList(query)
+      handler ({ query }) {
+        this.getUserList(query)
       },
       immediate: true
     }
   },
   methods: {
-    async queryUserList (payload) {
+    /**
+     * @param {Object} query
+     * @param {string} query.name 姓名
+     * @param {string} query.page 页码
+     * @param {string} query.pageSize 每页显示条目个数
+     */
+    async getUserList (query = {}) {
       this.loading = true
-      const params = omitEmpty(payload)
+      const params = omitEmpty(query)
       const res = await queryUserList(params)
-      this.list = res.data
+      this.list = Object.freeze(res.data)
       this.pagination.total = res.total
-      this.pagination.pageSize = Number(payload.pageSize) || 10
-      this.pagination.currentPage = Number(payload.page) || 1
+      this.pagination.pageSize = Number(query.pageSize) || 10
+      this.pagination.currentPage = Number(query.page) || 1
       this.loading = false
     },
-    handleRefresh (newQuery) {
+
+    refreshData (newQuery = {}) {
       const query = { ...this.$route.query, ...newQuery }
-      this.$router.push(
-        {
-          name: 'user',
+
+      this.$router
+        .push({
+          name: this.$route.name,
           query
-        },
-        undefined,
-        err => {
-          if (err.name === 'NavigationDuplicated') {
-            this.queryUserList(query)
-          }
-        }
-      )
+        })
+        .catch(() => {
+          this.getUserList(query)
+        })
     },
+
     async handleDelteItem (id) {
       this.loading = true
       await removeUser(id)
-      this.handleRefresh({
+      this.refreshData({
         page:
           this.list.length === 1 && this.pagination.currentPage > 1
             ? this.pagination.currentPage - 1
             : this.pagination.currentPage
       })
     },
+
     handleEditItem (item) {
       this.currentItem = { ...item }
       this.modalType = 'update'
       this.modalVisible = true
     },
-    handleCurrentChange (page) {
-      this.handleRefresh({
+
+    handleCurrentPageChange (page) {
+      this.refreshData({
         page
       })
     },
-    handleSizeChange (pageSize) {
-      this.handleRefresh({
+
+    handlePageSizeChange (pageSize) {
+      this.refreshData({
         pageSize
       })
     },
+
     handleAdd () {
       this.currentItem = {}
       this.modalVisible = true
       this.modalType = 'create'
     },
+
     async handleOk (data, type) {
       if (type === 'create') {
         const id = Math.floor(Math.random() * 10000000)
@@ -135,10 +152,11 @@ export default {
         await updateUser(data.id, { ...data })
       }
       this.modalVisible = false
-      this.handleRefresh()
+      this.refreshData()
     },
-    onFilterChange (fields) {
-      this.handleRefresh({ ...fields })
+
+    handleFilterChange (fields) {
+      this.refreshData({ ...fields })
     }
   }
 }
@@ -152,6 +170,10 @@ export default {
   background: #fff;
   .user-filter {
     margin-bottom: 20px;
+  }
+  .pagination-wrapper {
+    text-align: right;
+    padding: 30px 0;
   }
 }
 </style>

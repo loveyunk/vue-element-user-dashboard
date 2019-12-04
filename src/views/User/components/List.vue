@@ -63,17 +63,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination-wrapper">
-      <el-pagination
-        v-if="dataSource.length"
-        v-bind="pagination"
-        layout="total, sizes, prev, pager, next, jumper"
-        background
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-        :page-sizes="[10, 20, 30, 40]"
-      ></el-pagination>
-    </div>
   </div>
 </template>
 
@@ -83,10 +72,6 @@ export default {
   props: {
     dataSource: {
       type: Array,
-      required: true
-    },
-    pagination: {
-      type: Object,
       required: true
     },
     loading: {
@@ -120,12 +105,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.list-container {
-  .pagination-wrapper {
-    text-align: right;
-    padding: 30px 0;
-  }
-}
-</style>

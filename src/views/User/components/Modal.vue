@@ -2,6 +2,7 @@
   <el-dialog
     :title="type === 'create' ? '创建用户' : '更新用户'"
     :visible.sync="modalVisible"
+    @close="handleClose"
   >
     <el-form :model="item" ref="item" :rules="rules" label-width="80px">
       <el-form-item label="名字" prop="name">
@@ -108,13 +109,6 @@ export default {
       }
     }
   },
-  watch: {
-    visible (val) {
-      if (!val) {
-        this.reset()
-      }
-    }
-  },
   methods: {
     handleOk () {
       this.$refs.item.validate(valid => {
@@ -130,6 +124,9 @@ export default {
     },
     reset () {
       this.$refs.item.resetFields()
+    },
+    handleClose () {
+      this.reset()
     }
   }
 }

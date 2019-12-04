@@ -41,7 +41,15 @@ export default {
   },
   data () {
     return {
-      name: this.filter.name
+      name: ''
+    }
+  },
+  watch: {
+    filter: {
+      handler ({ name }) {
+        this.name = name
+      },
+      immediate: true
     }
   },
   methods: {
