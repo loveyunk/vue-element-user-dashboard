@@ -47,6 +47,8 @@ import {
 } from '@/services/user'
 import omitEmpty from 'omit-empty'
 
+const DEFAULT_PAGE_SIZE = 10
+
 export default {
   name: 'User',
   components: {
@@ -65,7 +67,7 @@ export default {
       pagination: {
         total: null,
         currentPage: 1,
-        pageSize: 10
+        pageSize: DEFAULT_PAGE_SIZE
       }
     }
   },
@@ -90,7 +92,7 @@ export default {
       const res = await queryUserList(params)
       this.list = Object.freeze(res.data)
       this.pagination.total = res.total
-      this.pagination.pageSize = Number(query.pageSize) || 10
+      this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE
       this.pagination.currentPage = Number(query.page) || 1
       this.loading = false
     },
