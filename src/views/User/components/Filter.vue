@@ -41,15 +41,12 @@ export default {
   },
   data () {
     return {
-      name: ''
+      name: this.filter.name
     }
   },
   watch: {
-    filter: {
-      handler ({ name }) {
-        this.name = name
-      },
-      immediate: true
+    filter ({ name }) {
+      this.name = name
     }
   },
   methods: {
