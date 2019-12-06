@@ -74,7 +74,7 @@ export default {
   watch: {
     $route: {
       handler ({ query }) {
-        this.getUserList(query)
+        this.fetchUserList(query)
       },
       immediate: true
     }
@@ -86,7 +86,7 @@ export default {
      * @param {string} query.page 页码
      * @param {string} query.pageSize 每页显示条目个数
      */
-    async getUserList (query = {}) {
+    async fetchUserList (query = {}) {
       this.loading = true
       const params = omitEmpty(query)
       const res = await queryUserList(params)
@@ -97,7 +97,7 @@ export default {
       this.loading = false
     },
 
-    refreshData (newQuery = {}) {
+    handleRefresh (newQuery = {}) {
       const query = { ...this.$route.query, ...newQuery }
 
       this.$router.push({
@@ -112,7 +112,7 @@ export default {
     async handleDelteItem (id) {
       this.loading = true
       await removeUser(id)
-      this.refreshData({
+      this.handleRefresh({
         page:
           this.list.length === 1 && this.pagination.currentPage > 1
             ? this.pagination.currentPage - 1
@@ -127,13 +127,13 @@ export default {
     },
 
     handleCurrentPageChange (page) {
-      this.refreshData({
+      this.handleRefresh({
         page
       })
     },
 
     handlePageSizeChange (pageSize) {
-      this.refreshData({
+      this.handleRefresh({
         pageSize
       })
     },
@@ -153,11 +153,11 @@ export default {
         await updateUser(data.id, { ...data })
       }
       this.modalVisible = false
-      this.refreshData()
+      this.handleRefresh()
     },
 
     handleFilterChange (fields) {
-      this.refreshData({ ...fields })
+      this.handleRefresh({ ...fields })
     }
   }
 }
