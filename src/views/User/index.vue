@@ -100,14 +100,13 @@ export default {
     refreshData (newQuery = {}) {
       const query = { ...this.$route.query, ...newQuery }
 
-      this.$router
-        .push({
-          name: this.$route.name,
-          query
-        })
-        .catch(() => {
-          this.getUserList(query)
-        })
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          ...query,
+          t: +new Date()
+        }
+      })
     },
 
     async handleDelteItem (id) {
