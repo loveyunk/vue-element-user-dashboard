@@ -48,6 +48,7 @@ import {
 import omitEmpty from 'omit-empty'
 
 const DEFAULT_PAGE_SIZE = 10
+const DEFAULT_CURRENT_PAGE = 1
 
 export default {
   name: 'User',
@@ -66,7 +67,7 @@ export default {
       modalType: 'create',
       pagination: {
         total: null,
-        currentPage: 1,
+        currentPage: DEFAULT_CURRENT_PAGE,
         pageSize: DEFAULT_PAGE_SIZE
       }
     }
@@ -93,7 +94,7 @@ export default {
       this.list = Object.freeze(res.data)
       this.pagination.total = res.total
       this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE
-      this.pagination.currentPage = Number(query.page) || 1
+      this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE
       this.loading = false
     },
 
