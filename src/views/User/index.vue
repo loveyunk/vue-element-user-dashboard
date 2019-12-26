@@ -45,6 +45,7 @@ import {
   createUser,
   updateUser
 } from '@/services/user'
+import shallowEqual from '../../utils/shallowEqual'
 import omitEmpty from 'omit-empty'
 
 const DEFAULT_PAGE_SIZE = 10
@@ -101,13 +102,16 @@ export default {
     handleRefresh (newQuery = {}) {
       const query = { ...this.$route.query, ...newQuery }
 
-      this.$router.push({
-        path: this.$route.path,
-        query: {
-          ...query,
-          t: +new Date()
-        }
-      })
+      if (!shallowEqual(query, this.$route.query)) {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            ...query
+          }
+        })
+      } else {
+        this.fetchUserList(query)
+      }
     },
 
     async handleDelteItem (id) {
