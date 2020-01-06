@@ -4,15 +4,16 @@
       <el-col :span="6">
         <el-input
           v-model="name"
-          @change="handleChange"
-          @keyup.native.enter="handleEnter"
+          @keyup.native.enter="handleQuery"
+          @clear="handleQuery"
+          clearable
           suffix-icon="el-icon-search"
         ></el-input>
       </el-col>
       <el-col :span="17">
         <el-row type="flex" justify="space-between">
           <div>
-            <el-button type="primary" @click="handleSubmit">搜索</el-button>
+            <el-button type="primary" @click="handleQuery">搜索</el-button>
             <el-button @click="handleReset">重置</el-button>
           </div>
           <el-button @click="handleAdd">创建</el-button>
@@ -55,10 +56,6 @@ export default {
         ...this.$data
       }
     },
-    handleSubmit () {
-      const filter = this.handleFields()
-      this.onFilterChange(filter)
-    },
     handleReset () {
       for (const key in this.$data) {
         if (this.$data.hasOwnProperty(key)) {
@@ -71,8 +68,7 @@ export default {
       }
       this.handleSubmit()
     },
-    handleChange () {},
-    handleEnter () {
+    handleQuery () {
       const filter = this.handleFields()
       this.onFilterChange(filter)
     },
