@@ -162,7 +162,7 @@ export default {
     },
 
     handleFilterChange (fields) {
-      this.handleRefresh({ ...fields })
+      this.handleRefresh({ ...fields, page: DEFAULT_CURRENT_PAGE })
     }
   }
 }
