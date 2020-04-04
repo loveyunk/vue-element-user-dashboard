@@ -2,6 +2,7 @@
   "name": "vue-element-user-dashboard",
   "version": "0.1.0",
   "private": true,
+  "prettier": "@loveyunk/prettier-config",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -18,10 +19,11 @@
     "vue-router": "^3.1.3"
   },
   "devDependencies": {
+    "@loveyunk/eslint-config-vue-prettier-airbnb": "^1.3.0",
+    "@loveyunk/prettier-config": "^1.0.0",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.11.0",
     "@vue/cli-service": "^3.11.0",
-    "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
