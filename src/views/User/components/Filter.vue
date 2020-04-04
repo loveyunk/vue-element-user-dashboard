@@ -71,7 +71,8 @@ export default {
           }
         }
       }
-      this.handleSubmit();
+
+      this.queryResult();
     },
 
     queryResult() {
