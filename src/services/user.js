@@ -34,3 +34,10 @@ export const updateUser = (id, user) => {
     url: `/users/${id}`
   });
 };
+
+export const getUser = id => {
+  return request({
+    method: 'get',
+    url: `/users/${id}`
+  });
+};

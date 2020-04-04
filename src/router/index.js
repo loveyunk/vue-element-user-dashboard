@@ -28,9 +28,10 @@ export default new Router({
       }
     },
     {
-      path: '/user:id',
+      path: '/user/:id',
       name: 'user-detail',
       component: UserDetail,
+      props: true,
       meta: {
         layout: 'primary'
       }

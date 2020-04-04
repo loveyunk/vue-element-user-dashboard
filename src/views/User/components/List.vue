@@ -6,7 +6,15 @@
           <el-avatar shape="circle" :src="scope.row.avatar" />
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="名字" align="center" />
+      <el-table-column label="名字" align="center">
+        <template slot-scope="scope">
+          <router-link
+            :to="{ name: 'user-detail', params: { id: scope.row.id } }"
+          >
+            {{ scope.row.name }}
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="nickName"
         label="昵称"

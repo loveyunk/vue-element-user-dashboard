@@ -1,12 +1,12 @@
 <template>
-  <div class="home-container">
+  <div class="home">
     <!-- eslint-disable-next-line vue/html-self-closing -->
     <img src="/panda.jpg" alt="" width="680" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.home-container {
+.home {
   text-align: center;
 }
 </style>
