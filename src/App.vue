@@ -1,11 +1,19 @@
 <template>
   <div id="app">
-    <router-view />
+    <base-layout>
+      <router-view />
+    </base-layout>
   </div>
 </template>
 
 <script>
-export default {};
+import BaseLayout from './layouts/BaseLayout.vue';
+
+export default {
+  components: {
+    BaseLayout
+  }
+};
 </script>
 
 <style lang="scss">

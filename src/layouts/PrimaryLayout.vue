@@ -1,6 +1,6 @@
 <template>
-  <div class="default-layout">
-    <the-header />
+  <div>
+    <TheHeader />
     <main>
       <router-view />
     </main>
@@ -11,7 +11,6 @@
 import TheHeader from '@/components/TheHeader/index.vue';
 
 export default {
-  name: 'DefaultLayout',
   components: {
     TheHeader
   }

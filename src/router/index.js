@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import User from '@/views/User/index.vue';
+import UserDetail from '@/views/UserDetail/index.vue';
 import Home from '@/views/Home/index.vue';
 import NotFound from '@/views/NotFound/index.vue';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
 
 Vue.use(Router);
 
@@ -12,32 +12,36 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      component: DefaultLayout,
-      redirect: '/home',
-      children: [
-        {
-          path: 'home',
-          component: Home,
-          name: 'home'
-        }
-      ]
+      path: '/home',
+      name: 'home',
+      component: Home,
+      meta: {
+        layout: 'primary'
+      }
     },
     {
       path: '/user',
-      component: DefaultLayout,
-      children: [
-        {
-          path: '/',
-          component: User,
-          name: 'user'
-        }
-      ]
+      name: 'user',
+      component: User,
+      meta: {
+        layout: 'primary'
+      }
+    },
+    {
+      path: '/user:id',
+      name: 'user-detail',
+      component: UserDetail,
+      meta: {
+        layout: 'primary'
+      }
     },
     {
       path: '/404',
       name: '404',
-      component: NotFound
+      component: NotFound,
+      meta: {
+        layout: 'public'
+      }
     },
     {
       path: '*',
