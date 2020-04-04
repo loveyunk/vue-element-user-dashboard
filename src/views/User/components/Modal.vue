@@ -2,14 +2,14 @@
   <el-dialog
     :title="type === 'create' ? '创建用户' : '更新用户'"
     :visible.sync="modalVisible"
-    @close="handleClose"
+    @close="reset"
   >
-    <el-form :model="item" ref="item" :rules="rules" label-width="80px">
+    <el-form ref="item" :model="item" :rules="rules" label-width="80px">
       <el-form-item label="名字" prop="name">
-        <el-input v-model="item.name"></el-input>
+        <el-input v-model="item.name" />
       </el-form-item>
       <el-form-item label="昵称" prop="nickName">
-        <el-input v-model="item.nickName"></el-input>
+        <el-input v-model="item.nickName" />
       </el-form-item>
       <el-form-item label="性别" prop="isMale">
         <el-radio-group v-model="item.isMale">
@@ -23,32 +23,24 @@
           controls-position="right"
           :min="18"
           :max="100"
-        ></el-input-number>
+        />
       </el-form-item>
       <el-form-item label="电话" prop="phone">
-        <el-input v-model="item.phone"></el-input>
+        <el-input v-model="item.phone" />
       </el-form-item>
       <el-form-item label="电子邮件" prop="email">
-        <el-input v-model="item.email"></el-input>
+        <el-input v-model="item.email" />
       </el-form-item>
-      <!-- <el-form-item label="地址" prop="address">
-        <el-cascader
-          :options="city"
-        ></el-cascader>
-      </el-form-item> -->
     </el-form>
     <span slot="footer">
-      <el-button @click="handleCancel">取 消</el-button>
+      <el-button @click="modalVisible = false">取 消</el-button>
       <el-button type="primary" @click="handleOk">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import city from '@/utils/city'
-
 export default {
-  name: 'UserModal',
   props: {
     visible: {
       type: Boolean,
@@ -63,24 +55,26 @@ export default {
       required: true
     }
   },
-  data () {
-    this.city = city
+
+  data() {
     const validatePhone = (rule, value, callback) => {
-      const regexp = /^1[34578]\d{9}$/
+      const regexp = /^1[34578]\d{9}$/;
       if (!regexp.test(value)) {
-        callback(new Error('输入无效的手机!'))
+        callback(new Error('输入无效的手机!'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
+
     const validateEmail = (rule, value, callback) => {
-      const regexp = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      const regexp = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
       if (!regexp.test(value)) {
-        callback(new Error('输入的电子邮件无效!'))
+        callback(new Error('输入的电子邮件无效!'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
+
     return {
       rules: {
         name: [{ required: true, trigger: 'blur' }],
@@ -95,39 +89,35 @@ export default {
           { required: true, trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
         ]
-        // address: [{ required: true, trigger: 'blur' }]
       }
-    }
+    };
   },
+
   computed: {
     modalVisible: {
-      get () {
-        return this.visible
+      get() {
+        return this.visible;
       },
-      set (val) {
-        this.$emit('update:visible', val)
+      set(val) {
+        this.$emit('update:visible', val);
       }
     }
   },
+
   methods: {
-    handleOk () {
+    handleOk() {
       this.$refs.item.validate(valid => {
         if (valid) {
-          this.$emit('on-ok', this.item, this.type)
+          this.$emit('on-ok', this.item, this.type);
         } else {
-          return false
+          return false;
         }
-      })
+      });
     },
-    handleCancel () {
-      this.modalVisible = false
-    },
-    reset () {
-      this.$refs.item.resetFields()
-    },
-    handleClose () {
-      this.reset()
+
+    reset() {
+      this.$refs.item.resetFields();
     }
   }
-}
+};
 </script>

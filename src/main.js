@@ -1,19 +1,19 @@
-import Vue from 'vue'
-import App from './App.vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import router from './router'
-import * as filters from './filters'
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import App from './App.vue';
+import 'element-ui/lib/theme-chalk/index.css';
+import router from './router';
+import * as filters from './filters';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
+  Vue.filter(key, filters[key]);
+});
 
-Vue.use(ElementUI, { size: 'small' })
+Vue.use(ElementUI, { size: 'small' });
 
 new Vue({
   router,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

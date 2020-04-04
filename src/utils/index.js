@@ -1,27 +1,15 @@
-export function add0 (m) {
-  return m < 10 ? '0' + m : m
+export function add0(m) {
+  return m < 10 ? `0${m}` : m;
 }
 
-export function formatDate (timeStamp) {
-  let time = new Date(timeStamp)
-  let y = time.getFullYear()
-  let m = time.getMonth() + 1
-  let d = time.getDate()
-  let h = time.getHours()
-  let mm = time.getMinutes()
-  let s = time.getSeconds()
+export function formatDate(timeStamp) {
+  const time = new Date(timeStamp);
+  const y = time.getFullYear();
+  const m = time.getMonth() + 1;
+  const d = time.getDate();
+  const h = time.getHours();
+  const mm = time.getMinutes();
+  const s = time.getSeconds();
 
-  return (
-    y +
-    '-' +
-    add0(m) +
-    '-' +
-    add0(d) +
-    ' ' +
-    add0(h) +
-    ':' +
-    add0(mm) +
-    ':' +
-    add0(s)
-  )
+  return `${y}-${add0(m)}-${add0(d)} ${add0(h)}:${add0(mm)}:${add0(s)}`;
 }

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const client = axios.create({
   baseURL: 'http://localhost:3000',
@@ -6,19 +6,19 @@ const client = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json'
   }
-})
+});
 
 const request = options => {
   const onSuccess = response => {
-    const total = parseInt(response.headers['x-total-count'])
+    const total = parseInt(response.headers['x-total-count'], 10);
 
     return Promise.resolve({
       total,
       ...response.data
-    })
-  }
+    });
+  };
 
-  return client(options).then(onSuccess)
-}
+  return client(options).then(onSuccess);
+};
 
-export default request
+export default request;

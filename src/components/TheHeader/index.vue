@@ -18,9 +18,5 @@
 <script>
 export default {
   name: 'TheHeader'
-}
+};
 </script>
-
-<style lang="sass" scoped>
-
-</style>

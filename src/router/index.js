@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import User from '@/views/User'
-import Home from '@/views/Home'
-import NotFound from '@/views/NotFound'
-import DefaultLayout from '@/layouts/DefaultLayout'
+import Vue from 'vue';
+import Router from 'vue-router';
+import User from '@/views/User/index.vue';
+import Home from '@/views/Home/index.vue';
+import NotFound from '@/views/NotFound/index.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -46,4 +46,4 @@ export default new Router({
       }
     }
   ]
-})
+});

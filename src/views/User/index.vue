@@ -1,65 +1,68 @@
 <template>
   <body-color color="#eff1f4">
     <div class="user-container">
-      <user-filter
+      <UserFilter
         class="user-filter"
         :filter="$route.query"
         :on-filter-change="handleFilterChange"
-        @on-add="handleAdd"
-      ></user-filter>
-      <user-list
-        :data-source="list"
+        @add-item="addItem"
+      />
+
+      <UserList
         :loading="loading"
-        @on-delete-item="handleDelteItem"
-        @on-edit-item="handleEditItem"
-      ></user-list>
-      <user-modal
+        :data-source="list"
+        @on-delete-item="deleteItem"
+        @on-edit-item="editItem"
+      />
+
+      <UserModal
         :type="modalType"
         :visible.sync="modalVisible"
         :item="currentItem"
         @on-ok="handleOk"
-      ></user-modal>
-      <div class="pagination-wrapper">
-        <el-pagination
-          v-if="list.length"
-          v-bind="pagination"
-          layout="total, sizes, prev, pager, next, jumper"
-          background
-          @current-change="handleCurrentPageChange"
-          @size-change="handlePageSizeChange"
-          :page-sizes="[10, 20, 30, 40]"
-        ></el-pagination>
-      </div>
+      />
+
+      <el-pagination
+        v-if="list.length"
+        class="pagination-wrapper"
+        v-bind="pagination"
+        layout="total, sizes, prev, pager, next, jumper"
+        background
+        :page-sizes="[10, 20, 30, 40]"
+        @current-change="handleCurrentPageChange"
+        @size-change="handlePageSizeChange"
+      />
     </div>
   </body-color>
 </template>
 
 <script>
-import BodyColor from '@/components/BodyColor'
-import UserList from './components/List'
-import UserModal from './components/Modal'
-import UserFilter from './components/Filter'
+import BodyColor from '@/components/BodyColor/index.vue';
 import {
   queryUserList,
   removeUser,
   createUser,
   updateUser
-} from '@/services/user'
-import shallowEqual from '../../utils/shallowEqual'
-import omitEmpty from 'omit-empty'
+} from '@/services/user';
 
-const DEFAULT_PAGE_SIZE = 10
-const DEFAULT_CURRENT_PAGE = 1
+import omitEmpty from 'omit-empty';
+import UserList from './components/List.vue';
+import UserModal from './components/Modal.vue';
+import UserFilter from './components/Filter.vue';
+import shallowEqual from '../../utils/shallowEqual';
+
+const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_CURRENT_PAGE = 1;
 
 export default {
-  name: 'User',
   components: {
     BodyColor,
     UserList,
     UserModal,
     UserFilter
   },
-  data () {
+
+  data() {
     return {
       loading: false,
       list: [],
@@ -71,16 +74,18 @@ export default {
         currentPage: DEFAULT_CURRENT_PAGE,
         pageSize: DEFAULT_PAGE_SIZE
       }
-    }
+    };
   },
+
   watch: {
     $route: {
-      handler ({ query }) {
-        this.fetchUserList(query)
+      handler({ query }) {
+        this.fetchUserList(query);
       },
       immediate: true
     }
   },
+
   methods: {
     /**
      * @param {Object} query
@@ -88,84 +93,83 @@ export default {
      * @param {string} query.page 页码
      * @param {string} query.pageSize 每页显示条目个数
      */
-    async fetchUserList (query = {}) {
-      this.loading = true
-      const params = omitEmpty(query)
-      const res = await queryUserList(params)
-      this.list = Object.freeze(res.data)
-      this.pagination.total = res.total
-      this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE
-      this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE
-      this.loading = false
+    async fetchUserList(query = {}) {
+      this.loading = true;
+      const params = omitEmpty(query);
+      const res = await queryUserList(params);
+      this.list = Object.freeze(res.data);
+      this.pagination.total = res.total;
+      this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE;
+      this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE;
+      this.loading = false;
     },
 
-    handleRefresh (newQuery = {}) {
-      const query = { ...this.$route.query, ...newQuery }
-
+    refreshList(newQuery = {}) {
+      const query = { ...this.$route.query, ...newQuery };
       if (!shallowEqual(query, this.$route.query)) {
         this.$router.push({
           path: this.$route.path,
           query: {
             ...query
           }
-        })
+        });
       } else {
-        this.fetchUserList(query)
+        this.fetchUserList(query);
       }
     },
 
-    async handleDelteItem (id) {
-      this.loading = true
-      await removeUser(id)
-      this.handleRefresh({
+    async deleteItem(id) {
+      this.loading = true;
+      await removeUser(id);
+      this.refreshList({
         page:
           this.list.length === 1 && this.pagination.currentPage > 1
             ? this.pagination.currentPage - 1
             : this.pagination.currentPage
-      })
+      });
     },
 
-    handleEditItem (item) {
-      this.currentItem = { ...item }
-      this.modalType = 'update'
-      this.modalVisible = true
+    editItem(item) {
+      this.currentItem = { ...item };
+      this.modalType = 'update';
+      this.modalVisible = true;
     },
 
-    handleCurrentPageChange (page) {
-      this.handleRefresh({
+    handleCurrentPageChange(page) {
+      this.refreshList({
         page
-      })
+      });
     },
 
-    handlePageSizeChange (pageSize) {
-      this.handleRefresh({
+    handlePageSizeChange(pageSize) {
+      this.refreshList({
         pageSize
-      })
+      });
     },
 
-    handleAdd () {
-      this.currentItem = {}
-      this.modalVisible = true
-      this.modalType = 'create'
+    addItem() {
+      this.currentItem = {};
+      this.modalVisible = true;
+      this.modalType = 'create';
     },
 
-    async handleOk (data, type) {
+    async handleOk(data, type) {
       if (type === 'create') {
-        const id = Math.floor(Math.random() * 10000000)
-        const createTime = Date.now()
-        await createUser({ id, createTime, ...data })
+        const id = Math.floor(Math.random() * 10000000);
+        const createTime = Date.now();
+        await createUser({ id, createTime, ...data });
       } else {
-        await updateUser(data.id, { ...data })
+        await updateUser(data.id, { ...data });
       }
-      this.modalVisible = false
-      this.handleRefresh()
+      this.modalVisible = false;
+      this.refreshList();
     },
 
-    handleFilterChange (fields) {
-      this.handleRefresh({ ...fields, page: DEFAULT_CURRENT_PAGE })
+    handleFilterChange(fields) {
+      this.refreshList({ ...fields, page: DEFAULT_CURRENT_PAGE });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
