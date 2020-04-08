@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <base-layout>
-      <router-view />
-    </base-layout>
+    <app-layout>
+      <router-view :key="$route.fullPath" />
+    </app-layout>
   </div>
 </template>
 
 <script>
-import BaseLayout from './layouts/BaseLayout.vue';
+import AppLayout from '@/layouts/index.vue';
 
 export default {
   components: {
-    BaseLayout
+    AppLayout
   }
 };
 </script>

@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import PrimaryLayout from './PrimaryLayout.vue';
-import PublicLayout from './PublicLayout.vue';
+import publicLayout from './public.vue';
+import primary from './primary.vue';
 
 export default {
   components: {
-    primary: PrimaryLayout,
-    public: PublicLayout
+    primary,
+    public: publicLayout
   },
 
   computed: {
