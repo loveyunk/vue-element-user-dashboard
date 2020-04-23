@@ -1,5 +1,5 @@
 <template>
-  <div class="base-header">
+  <header>
     <el-menu
       :default-active="$route.path"
       mode="horizontal"
@@ -12,7 +12,7 @@
       <el-menu-item index="/user">用户中心</el-menu-item>
       <el-menu-item index="/404">404</el-menu-item>
     </el-menu>
-  </div>
+  </header>
 </template>
 
 <script>

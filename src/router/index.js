@@ -19,18 +19,12 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: Home,
-      meta: {
-        layout: 'primary'
-      }
+      component: Home
     },
     {
       path: '/user',
       name: 'user',
-      component: User,
-      meta: {
-        layout: 'primary'
-      }
+      component: User
     },
     {
       path: '/user/:id',
@@ -38,7 +32,7 @@ export default new Router({
       component: UserDetail,
       props: true,
       meta: {
-        layout: 'public'
+        layout: 'blank'
       }
     },
     {
@@ -46,7 +40,7 @@ export default new Router({
       name: '404',
       component: NotFound,
       meta: {
-        layout: 'public'
+        layout: 'blank'
       }
     },
     {

@@ -51,8 +51,8 @@ import UserModal from './components/Modal.vue';
 import UserFilter from './components/Filter.vue';
 import shallowEqual from '../../utils/shallowEqual';
 
-const DEFAULT_PAGE_SIZE = 10;
-const DEFAULT_CURRENT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10; // default page size
+const DEFAULT_CURRENT_PAGE = 1; // default current page
 
 export default {
   components: {
@@ -91,7 +91,7 @@ export default {
      * @param {Object} query
      * @param {string} query.name 姓名
      * @param {string} query.page 页码
-     * @param {string} query.pageSize 每页显示条目个数
+     * @param {string} query.pageSize 每页显示条目数
      */
     async fetchUserList(query = {}) {
       this.loading = true;
