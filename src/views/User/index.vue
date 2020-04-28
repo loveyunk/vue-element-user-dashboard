@@ -95,12 +95,13 @@ export default {
      */
     async fetchUserList(query = {}) {
       this.loading = true;
+      this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE;
+      this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE;
+
       const params = omitEmpty(query);
       const res = await queryUserList(params);
       this.list = Object.freeze(res.data);
       this.pagination.total = res.total;
-      this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE;
-      this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE;
       this.loading = false;
     },
 
@@ -122,10 +123,11 @@ export default {
       this.loading = true;
       await removeUser(id);
       this.refreshList({
-        page:
+        page: String(
           this.list.length === 1 && this.pagination.currentPage > 1
             ? this.pagination.currentPage - 1
             : this.pagination.currentPage
+        )
       });
     },
 
@@ -137,13 +139,13 @@ export default {
 
     handleCurrentPageChange(page) {
       this.refreshList({
-        page
+        page: String(page)
       });
     },
 
     handlePageSizeChange(pageSize) {
       this.refreshList({
-        pageSize
+        pageSize: String(pageSize)
       });
     },
 
@@ -166,7 +168,7 @@ export default {
     },
 
     handleFilterChange(fields) {
-      this.refreshList({ ...fields, page: DEFAULT_CURRENT_PAGE });
+      this.refreshList({ ...fields, page: String(DEFAULT_CURRENT_PAGE) });
     }
   }
 };
