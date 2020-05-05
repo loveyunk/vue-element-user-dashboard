@@ -1,29 +1,29 @@
 <template>
   <body-color color="#eff1f4">
     <div class="user-container">
-      <UserFilter
-        class="user-filter"
-        :filter="$route.query"
-        :on-filter-change="handleFilterChange"
-        @add-item="addItem"
+      <user-search
+        :search="$route.query"
+        @on-search-user="searchUser"
+        @on-create-user="openCreateUserDialog"
       />
 
-      <UserList
+      <user-list
         :loading="loading"
-        :data-source="list"
-        @on-delete-item="deleteItem"
-        @on-edit-item="editItem"
+        :data-source="users"
+        @on-delete-user="deleteUser"
+        @on-update-user="openUpdateUserDialog"
       />
 
-      <UserModal
-        :type="modalType"
-        :visible.sync="modalVisible"
-        :item="currentItem"
-        @on-ok="handleOk"
+      <user-dialog
+        :type="dialogType"
+        :visible.sync="dialog"
+        :loading="dialogLoading"
+        :user="user"
+        @on-ok="dialogOk"
       />
 
       <el-pagination
-        v-if="list.length"
+        v-if="users.length"
         class="pagination-wrapper"
         v-bind="pagination"
         layout="total, sizes, prev, pager, next, jumper"
@@ -38,18 +38,13 @@
 
 <script>
 import BodyColor from '@/components/BodyColor/index.vue';
-import {
-  queryUserList,
-  removeUser,
-  createUser,
-  updateUser
-} from '@/services/user';
+import UserService from '@/services/UserService';
 
 import omitEmpty from 'omit-empty';
+import isEqual from 'lodash/isEqual';
 import UserList from './components/List.vue';
-import UserModal from './components/Modal.vue';
-import UserFilter from './components/Filter.vue';
-import shallowEqual from '../../utils/shallowEqual';
+import UserDialog from './components/Dialog.vue';
+import UserSearch from './components/Search.vue';
 
 const DEFAULT_PAGE_SIZE = 10; // default page size
 const DEFAULT_CURRENT_PAGE = 1; // default current page
@@ -58,17 +53,18 @@ export default {
   components: {
     BodyColor,
     UserList,
-    UserModal,
-    UserFilter
+    UserDialog,
+    UserSearch
   },
 
   data() {
     return {
       loading: false,
-      list: [],
-      currentItem: {},
-      modalVisible: false,
-      modalType: 'create',
+      users: [],
+      user: {},
+      dialog: false,
+      dialogType: 'create',
+      dialogLoading: false,
       pagination: {
         total: null,
         currentPage: DEFAULT_CURRENT_PAGE,
@@ -80,7 +76,7 @@ export default {
   watch: {
     $route: {
       handler({ query }) {
-        this.fetchUserList(query);
+        this.loadUsers(query);
       },
       immediate: true
     }
@@ -93,21 +89,21 @@ export default {
      * @param {string} query.page 页码
      * @param {string} query.pageSize 每页显示条目数
      */
-    async fetchUserList(query = {}) {
+    async loadUsers(query = {}) {
       this.loading = true;
       this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE;
       this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE;
 
       const params = omitEmpty(query);
-      const res = await queryUserList(params);
-      this.list = Object.freeze(res.data);
+      const res = await UserService.queryUserList(params);
+      this.users = Object.freeze(res.data);
       this.pagination.total = res.total;
       this.loading = false;
     },
 
-    refreshList(newQuery = {}) {
+    refreshUsers(newQuery = {}) {
       const query = { ...this.$route.query, ...newQuery };
-      if (!shallowEqual(query, this.$route.query)) {
+      if (!isEqual(query, this.$route.query)) {
         this.$router.push({
           path: this.$route.path,
           query: {
@@ -115,60 +111,63 @@ export default {
           }
         });
       } else {
-        this.fetchUserList(query);
+        this.loadUsers(query);
       }
     },
 
-    async deleteItem(id) {
+    async deleteUser(id) {
       this.loading = true;
-      await removeUser(id);
-      this.refreshList({
+      await UserService.removeUser(id);
+      this.refreshUsers({
         page: String(
-          this.list.length === 1 && this.pagination.currentPage > 1
+          this.users.length === 1 && this.pagination.currentPage > 1
             ? this.pagination.currentPage - 1
             : this.pagination.currentPage
         )
       });
     },
 
-    editItem(item) {
-      this.currentItem = { ...item };
-      this.modalType = 'update';
-      this.modalVisible = true;
+    openUpdateUserDialog(user) {
+      this.user = { ...user };
+      this.dialogType = 'update';
+      this.dialog = true;
+    },
+
+    openCreateUserDialog() {
+      this.user = {};
+      this.dialog = true;
+      this.dialogType = 'create';
     },
 
     handleCurrentPageChange(page) {
-      this.refreshList({
+      this.refreshUsers({
         page: String(page)
       });
     },
 
     handlePageSizeChange(pageSize) {
-      this.refreshList({
+      this.refreshUsers({
         pageSize: String(pageSize)
       });
     },
 
-    addItem() {
-      this.currentItem = {};
-      this.modalVisible = true;
-      this.modalType = 'create';
-    },
-
-    async handleOk(data, type) {
+    async dialogOk(data, type) {
+      this.dialogLoading = true;
       if (type === 'create') {
         const id = Math.floor(Math.random() * 10000000);
         const createTime = Date.now();
-        await createUser({ id, createTime, ...data });
+        await UserService.createUser({ id, createTime, ...data });
+        this.dialogLoading = false;
       } else {
-        await updateUser(data.id, { ...data });
+        await UserService.updateUser(data.id, { ...data });
+        this.dialogLoading = false;
       }
-      this.modalVisible = false;
-      this.refreshList();
+      this.dialog = false;
+      this.refreshUsers();
     },
 
-    handleFilterChange(fields) {
-      this.refreshList({ ...fields, page: String(DEFAULT_CURRENT_PAGE) });
+    searchUser(fields) {
+      this.refreshUsers({ ...fields, page: String(DEFAULT_CURRENT_PAGE) });
     }
   }
 };
@@ -180,9 +179,6 @@ export default {
   margin: 20px auto 50px;
   padding: 30px;
   background: #fff;
-  .user-filter {
-    margin-bottom: 20px;
-  }
   .pagination-wrapper {
     text-align: right;
     padding: 30px 0;

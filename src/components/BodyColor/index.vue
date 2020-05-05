@@ -1,9 +1,3 @@
-<template>
-  <div>
-    <slot />
-  </div>
-</template>
-
 <script>
 export default {
   props: {
@@ -23,8 +17,12 @@ export default {
     document.body.style.backgroundColor = this.color;
   },
 
-  destroyed() {
+  beforeDestroy() {
     document.body.style.backgroundColor = '#fff';
+  },
+
+  render(h) {
+    return h('div', this.$slots.default);
   }
 };
 </script>

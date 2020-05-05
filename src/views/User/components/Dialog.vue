@@ -1,40 +1,42 @@
 <template>
   <el-dialog
     :title="type === 'create' ? '创建用户' : '更新用户'"
-    :visible.sync="modalVisible"
+    :visible.sync="dialogVisible"
     @close="reset"
   >
-    <el-form ref="item" :model="item" :rules="rules" label-width="80px">
+    <el-form ref="user" :model="user" :rules="rules" label-width="80px">
       <el-form-item label="名字" prop="name">
-        <el-input v-model="item.name" />
+        <el-input v-model="user.name" />
       </el-form-item>
       <el-form-item label="昵称" prop="nickName">
-        <el-input v-model="item.nickName" />
+        <el-input v-model="user.nickName" />
       </el-form-item>
       <el-form-item label="性别" prop="isMale">
-        <el-radio-group v-model="item.isMale">
+        <el-radio-group v-model="user.isMale">
           <el-radio :label="true">男性</el-radio>
           <el-radio :label="false">女性</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="年龄" prop="age">
         <el-input-number
-          v-model="item.age"
+          v-model="user.age"
           controls-position="right"
           :min="18"
           :max="100"
         />
       </el-form-item>
       <el-form-item label="电话" prop="phone">
-        <el-input v-model="item.phone" />
+        <el-input v-model="user.phone" />
       </el-form-item>
       <el-form-item label="电子邮件" prop="email">
-        <el-input v-model="item.email" />
+        <el-input v-model="user.email" />
       </el-form-item>
     </el-form>
     <span slot="footer">
-      <el-button @click="modalVisible = false">取 消</el-button>
-      <el-button type="primary" @click="handleOk">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" :loading="loading" @click="handleOk"
+        >确 定</el-button
+      >
     </span>
   </el-dialog>
 </template>
@@ -42,6 +44,10 @@
 <script>
 export default {
   props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
     visible: {
       type: Boolean,
       default: false
@@ -50,7 +56,7 @@ export default {
       type: String,
       required: true
     },
-    item: {
+    user: {
       type: Object,
       required: true
     }
@@ -94,7 +100,7 @@ export default {
   },
 
   computed: {
-    modalVisible: {
+    dialogVisible: {
       get() {
         return this.visible;
       },
@@ -106,9 +112,9 @@ export default {
 
   methods: {
     handleOk() {
-      this.$refs.item.validate(valid => {
+      this.$refs.user.validate(valid => {
         if (valid) {
-          this.$emit('on-ok', this.item, this.type);
+          this.$emit('on-ok', this.user, this.type);
         } else {
           return false;
         }
@@ -116,7 +122,7 @@ export default {
     },
 
     reset() {
-      this.$refs.item.resetFields();
+      this.$refs.user.resetFields();
     }
   }
 };

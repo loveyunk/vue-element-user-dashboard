@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div class="search">
     <el-row type="flex" justify="space-between">
       <el-col :span="6">
         <el-input
           v-model="name"
           clearable
           suffix-icon="el-icon-search"
-          @keyup.native.enter="queryResult"
-          @clear="queryResult"
+          @keyup.native.enter="handleSearch"
+          @clear="handleSearch"
         />
       </el-col>
 
       <el-col :span="17">
         <el-row type="flex" justify="space-between">
           <div>
-            <el-button type="primary" @click="queryResult">搜索</el-button>
-            <el-button @click="resetForm">重置</el-button>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
           </div>
-          <el-button @click="$emit('add-item')">创建</el-button>
+          <el-button @click="$emit('on-create-user')">创建</el-button>
         </el-row>
       </el-col>
     </el-row>
@@ -27,41 +27,31 @@
 <script>
 export default {
   props: {
-    filter: {
+    search: {
       type: Object,
       default() {
         return {};
-      }
-    },
-
-    onFilterChange: {
-      type: Function,
-      default() {
-        return () => {};
       }
     }
   },
 
   data() {
     return {
-      name: this.filter.name
+      name: this.search.name
     };
   },
 
   watch: {
-    filter({ name }) {
-      this.name = name;
+    search: {
+      handler({ name }) {
+        this.name = name;
+      },
+      immediate: true
     }
   },
 
   methods: {
-    handleFields() {
-      return {
-        ...this.$data
-      };
-    },
-
-    resetForm() {
+    reset() {
       for (const key in this.$data) {
         if (Object.prototype.hasOwnProperty.call(this.$data, key)) {
           if (this.$data[key] instanceof Array) {
@@ -72,13 +62,18 @@ export default {
         }
       }
 
-      this.queryResult();
+      this.handleSearch();
     },
 
-    queryResult() {
-      const filter = this.handleFields();
-      this.onFilterChange(filter);
+    handleSearch() {
+      this.$emit('on-search-user', { name: this.name });
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.search {
+  margin-bottom: 20px;
+}
+</style>

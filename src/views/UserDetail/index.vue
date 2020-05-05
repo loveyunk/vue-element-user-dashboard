@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getUser } from '@/services/user';
+import UserService from '@/services/UserService';
 
 export default {
   props: {
@@ -28,7 +28,7 @@ export default {
 
   methods: {
     fetchUserData() {
-      getUser(this.id).then(res => {
+      UserService.getUser(this.id).then(res => {
         this.user = res.data;
       });
     }

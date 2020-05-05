@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export const queryUserList = ({ page = 1, pageSize = 10, ...rest } = {}) => {
+const queryUserList = ({ page = 1, pageSize = 10, ...rest } = {}) => {
   return request({
     method: 'get',
     url: `/users`,
@@ -12,14 +12,14 @@ export const queryUserList = ({ page = 1, pageSize = 10, ...rest } = {}) => {
   });
 };
 
-export const removeUser = id => {
+const removeUser = id => {
   return request({
     method: 'delete',
     url: `/users/${id}`
   });
 };
 
-export const createUser = user => {
+const createUser = user => {
   return request({
     data: user,
     method: 'post',
@@ -27,7 +27,7 @@ export const createUser = user => {
   });
 };
 
-export const updateUser = (id, user) => {
+const updateUser = (id, user) => {
   return request({
     data: user,
     method: 'put',
@@ -35,9 +35,17 @@ export const updateUser = (id, user) => {
   });
 };
 
-export const getUser = id => {
+const getUser = id => {
   return request({
     method: 'get',
     url: `/users/${id}`
   });
+};
+
+export default {
+  queryUserList,
+  createUser,
+  updateUser,
+  removeUser,
+  getUser
 };

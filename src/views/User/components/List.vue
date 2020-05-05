@@ -53,13 +53,18 @@
           <el-button
             type="text"
             size="small"
-            @click="$emit('on-edit-item', scope.row)"
+            @click="$emit('on-update-user', scope.row)"
           >
             更新
           </el-button>
-          <el-button type="text" size="small" @click="deleteItem(scope.row)">
-            删除
-          </el-button>
+          <el-popconfirm
+            title="您确定要删除这条记录吗?"
+            @onConfirm="deleteUser(scope.row)"
+          >
+            <el-button slot="reference" type="text" size="small">
+              删除
+            </el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -67,7 +72,15 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
+
 export default {
+  filters: {
+    formatDate(timestamp) {
+      return dayjs(timestamp).format('YYYY-MM-DD');
+    }
+  },
+
   props: {
     dataSource: {
       type: Array,
@@ -80,18 +93,8 @@ export default {
   },
 
   methods: {
-    deleteItem({ id }) {
-      this.$confirm('您确定要删除这条记录吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$emit('on-delete-item', id);
-        })
-        .catch(() => {
-          // cancel
-        });
+    deleteUser({ id }) {
+      this.$emit('on-delete-user', id);
     }
   }
 };
