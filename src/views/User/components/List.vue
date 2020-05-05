@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user-list">
     <el-table v-loading="loading" :data="dataSource" border>
       <el-table-column label="头像" align="center" fixed width="72">
         <template slot-scope="scope">
@@ -99,3 +99,12 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.user-list {
+  a {
+    color: #409eff;
+    text-decoration: none;
+  }
+}
+</style>
