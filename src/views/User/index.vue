@@ -85,9 +85,9 @@ export default {
   methods: {
     /**
      * @param {Object} query
-     * @param {string} query.name 姓名
-     * @param {string} query.page 页码
-     * @param {string} query.pageSize 每页显示条目数
+     * @param {string} query.name name
+     * @param {string} query.page page
+     * @param {string} query.pageSize pageSize
      */
     async loadUsers(query = {}) {
       this.loading = true;
