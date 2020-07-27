@@ -53,7 +53,7 @@
           <el-button
             type="text"
             size="small"
-            @click="$emit('on-update-user', scope.row)"
+            @click="$emit('on-update', scope.row)"
           >
             更新
           </el-button>
@@ -75,6 +75,8 @@
 import dayjs from 'dayjs';
 
 export default {
+  name: 'UserList',
+
   filters: {
     formatDate(timestamp) {
       return dayjs(timestamp).format('YYYY-MM-DD');
@@ -82,19 +84,17 @@ export default {
   },
 
   props: {
+    loading: Boolean,
+
     dataSource: {
       type: Array,
       required: true
-    },
-    loading: {
-      type: Boolean,
-      required: false
     }
   },
 
   methods: {
     deleteUser({ id }) {
-      this.$emit('on-delete-user', id);
+      this.$emit('on-delete', id);
     }
   }
 };

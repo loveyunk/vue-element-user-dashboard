@@ -14,10 +14,12 @@
       <el-col :span="17">
         <el-row type="flex" justify="space-between">
           <div>
-            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="primary" :loading="loading" @click="handleSearch"
+              >搜索</el-button
+            >
             <el-button @click="reset">重置</el-button>
           </div>
-          <el-button @click="$emit('on-create-user')">创建</el-button>
+          <el-button @click="$emit('on-create')">创建</el-button>
         </el-row>
       </el-col>
     </el-row>
@@ -26,7 +28,11 @@
 
 <script>
 export default {
+  name: 'UserSearch',
+
   props: {
+    loading: Boolean,
+
     search: {
       type: Object,
       default() {
@@ -66,7 +72,7 @@ export default {
     },
 
     handleSearch() {
-      this.$emit('on-search-user', { name: this.name });
+      this.$emit('on-search', { name: this.name });
     }
   }
 };
