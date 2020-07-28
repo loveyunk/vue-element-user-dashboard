@@ -17,8 +17,8 @@ export default {
     document.body.style.backgroundColor = this.color;
   },
 
-  beforeDestroy() {
-    document.body.style.backgroundColor = '#fff';
+  destroyed() {
+    document.body.style.removeProperty('background-color');
   },
 
   render(h) {
