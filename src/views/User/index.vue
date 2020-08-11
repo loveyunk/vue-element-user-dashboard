@@ -123,18 +123,18 @@ export default {
           this.users = Object.freeze(res.data);
           this.pagination.total = res.total;
         } else {
-          throw res.error_msg;
+          this.$message({
+            message: res.error_msg || '请求失败',
+            type: 'error',
+            duration: 2000
+          });
+
+          // 6. 隐藏 loading 状态
+          this.loading = false;
         }
       } catch (error) {
-        this.$message({
-          message: error || '请求失败',
-          type: 'error',
-          duration: 2000
-        });
+        this.loading = false;
       }
-
-      // 6. 隐藏 loading 状态
-      this.loading = false;
     },
 
     // 刷新用户列表
