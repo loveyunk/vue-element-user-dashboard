@@ -128,10 +128,9 @@ export default {
             type: 'error',
             duration: 2000
           });
-
-          // 6. 隐藏 loading 状态
-          this.loading = false;
         }
+        // 6. 隐藏 loading 状态
+        this.loading = false;
       } catch (error) {
         this.loading = false;
       }
