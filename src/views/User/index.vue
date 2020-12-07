@@ -86,12 +86,9 @@ export default {
     $route: {
       handler({ query }) {
         this.loadUsers(query);
-      }
+      },
+      immediate: true // 在created里回退的时候没有query
     }
-  },
-
-  created() {
-    this.loadUsers();
   },
 
   methods: {
@@ -107,7 +104,7 @@ export default {
       // 1. 显示 loading 状态
       this.loading = true;
 
-      // 2. 更新 data, rul -> data
+      // 2. 更新 data, url -> data
       this.pagination.pageSize = Number(query.pageSize) || DEFAULT_PAGE_SIZE;
       this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE;
 
