@@ -4,6 +4,7 @@
   "private": true,
   "prettier": "@loveyunk/prettier-config",
   "scripts": {
+    "start": "concurrently --kill-others-on-fail \"npm run serve\" \"node server.js\"",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "concurrently": "^5.3.0",
     "connect-pause": "^0.1.0",
     "core-js": "^2.6.5",
     "dayjs": "^1.8.26",

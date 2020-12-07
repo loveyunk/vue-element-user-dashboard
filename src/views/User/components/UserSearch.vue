@@ -5,6 +5,7 @@
         <el-input
           v-model="name"
           clearable
+          placeholder="姓名"
           suffix-icon="el-icon-search"
           @keyup.native.enter="handleSearch"
           @clear="handleSearch"
